@@ -1,41 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MV33-MOVIE</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="main-index.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MV33-MOVIE</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="main-index.js" defer></script>
 </head>
 
 <body class="bg-black">
-    <header class="flex flex-wrap items-center justify-between gap-4 px-4 py-3">
-        <img src="img/Duck-ai-image-2026-11-09-12-12-removebg-preview.png" alt="Logo"
-            class="w-28 h-auto relative left-10">
+  <header class="flex flex-wrap items-center justify-between gap-4 px-4 py-3">
+    <img
+      src="img/Duck-ai-image-2026-11-09-12-12-removebg-preview.png"
+      alt="Logo"
+      class="w-28 h-auto"
+    >
 
-        <nav class="flex flex-wrap items-center gap-3">
-            <a
-                class="rounded-full border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-black hover:bg-red-700">
-                Tout
-            </a>
-            <a
-                class="rounded-full border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-black hover:bg-red-700">
-                Movie
-            </a>
-            <a
-                class="rounded-full border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-black hover:bg-red-700">
-                TV Show
-            </a>
-        </nav>
+    <nav class="flex flex-wrap gap-3">
+      <button class="rounded-full bg-red-600 px-4 py-2 font-semibold text-white">Tout</button>
+      <button class="rounded-full bg-red-600 px-4 py-2 font-semibold text-white">Movie</button>
+      <button class="rounded-full bg-red-600 px-4 py-2 font-semibold text-white">TV Show</button>
+    </nav>
 
-        <img src="img/37d5dec70d6dc9a76a8a80cad6e3b5a5.jpg" alt="Profil"
-            class="h-10 w-10 rounded-full object-cover relative bottom-[7px] right-10">
-    </header>
+    <img
+      src="img/37d5dec70d6dc9a76a8a80cad6e3b5a5.jpg"
+      alt="Profil"
+      class="h-10 w-10 rounded-full object-cover"
+    >
+  </header>
 
-       <main class="p-6">
-  <div id="movies-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"><img src="img/58cf5f7a5606689e3190f9debc5f1912.jpg" class="border border-black rounded-xl" alt=""></div>
+  <main class="p-6">
+    <div id="movies-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+    <div class="modal-popup" id="modal-popup">
+    <div class="modal-popup-content border-2 border-solid bg-black" >
+        <h3>hh</h3>
+    </div>
+    </div>
        </main>
-
+    </div>
+  </div>
 </body>
 </html>
