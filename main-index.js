@@ -95,6 +95,7 @@ let pogiantion = document.createElement("ul")
       <div class="box w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
         <h5 class="mb-3 text-2xl font-semibold text-red-600">Favoris</h5>
         ${favorites.length ? favorites.map(m => `<img src="${m.image}" class="w-24 rounded-lg mb-1"><h3>${m.title}</h3>`).join("") : "<p>Aucun favori</p>"}
+        <button class= ""></button>
       </div>
     </div>`;
     favcard.classList.remove("hidden");
