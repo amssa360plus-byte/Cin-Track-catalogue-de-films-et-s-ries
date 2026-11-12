@@ -70,7 +70,7 @@
     
 
 
-  const all = document.querySelector("#Tous")
+  const all = document.querySelector("#Tout")
   const movie = document.querySelector("#movie")
   const show = document.querySelector("#Show")
 
@@ -167,7 +167,44 @@
     });
     grid.innerHTML = output;
   })
+
+  all.addEventListener("click", function(e){
+    e.preventDefault()
+    grid.innerHTML = output
+  })
+  const input = document.querySelector("#searche")
+  input.addEventListener("input", function(e){
+    e.preventDefault()
+    const serche = movies.filter(item=> item.title.toLowerCase() === input)
+    console.log(serche)
+  })
+
+  const fav = document.querySelector("#fav")
+  const favcard = document.querySelector("#favcard")
+  fav.addEventListener("click", function(e){
+         e.preventDefault()
+         let output3 = ''
+         output3=`<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+  <a href="index.html" class="block w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
+    <h5 class="mb-3 text-2xl font-semibold leading-8 text-red-600">
+    </h5>
+    <p class="text-gray-700">
+      <h3></h3>
+      <h3></h3>
+      <h3></h3>
+      <h3></h3>
+      <h3></h3>
+    </p>
+  </a>
+</div>`;
+
+   favcard.innerHTML = output3
+    favcard.classList.remove("hidden");
+
+  })
 }
+
+
 
 
 
