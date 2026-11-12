@@ -73,6 +73,7 @@ let pogiantion = document.createElement("ul")
     if (!btn) return;
     const m = movies[Number(btn.dataset.index)];
     card.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+    <a class="relative left-90 bottom-14" id="exitmovie"><i class="fa-solid fa-x" style="color: rgb(196, 17, 17);"></i></a>
       <div class="box w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
         <h5 class="mb-3 text-2xl font-semibold text-red-600">${m.title}</h5>
         <h3>${m.type}</h3>
@@ -82,6 +83,8 @@ let pogiantion = document.createElement("ul")
       </div>
     </div>`;
     card.classList.remove("hidden");
+    const exitmovie = document.querySelector("#exitmovie")
+  
   });
 
   card.addEventListener("click", e => {
@@ -94,11 +97,17 @@ let pogiantion = document.createElement("ul")
     favcard.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
       <div class="box w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
         <h5 class="mb-3 text-2xl font-semibold text-red-600">Favoris</h5>
+        <a class="relative left-80 bottom-10" id="exits"><i class="fa-solid fa-x" style="color: rgb(196, 17, 17);"></i><a>
         ${favorites.length ? favorites.map(m => `<img src="${m.image}" class="w-24 rounded-lg mb-1"><h3>${m.title}</h3>`).join("") : "<p>Aucun favori</p>"}
-        <button class= ""></button>
+        
       </div>
     </div>`;
     favcard.classList.remove("hidden");
+    const exist =document.querySelector("#exits")
+    exist.addEventListener("click", function(e){
+      e.preventDefault()
+      favcard.classList.add('hidden')
+    })
   });
 
   favcard.addEventListener("click", e => {
