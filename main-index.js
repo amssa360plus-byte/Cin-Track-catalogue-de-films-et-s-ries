@@ -5,226 +5,111 @@ async function getuser() {
   const movies = await response.json();
 
   const grid = document.querySelector("#movies-grid");
-  const modal = document.querySelector("#modal-popup");
-  const modalContent = modal.querySelector(".modal-popup-content");
-  const fav = document.querySelector("#fav")
-  const favcard = document.querySelector("#favcard")
+  const card = document.querySelector("#card");
+  const fav = document.querySelector("#fav");
+  const favcard = document.querySelector("#favcard");
+  const input = document.querySelector("#searche");
 
-  let favorites = []
+  let favorites = [];
 
-  function renderFav() {
-    favcard.innerHTML = `<div class="block w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
-    <h5 class="mb-3 text-2xl font-semibold leading-8 text-red-600">Favoris</h5>
-    ${favorites.length ? favorites.map(m => `<h3>${m.title}</h3>`).join("") : "<p>Aucun favori</p>"}
-  </div>`
-  }
-
-  modal.style.cssText =
-    "display:none; position:fixed; inset:0; z-index:50; background:rgba(0,0,0,.8); align-items:center; justify-content:center; padding:1rem;";
-  modalContent.style.cssText =
-    "width:100%; max-width:32rem; padding:1.5rem; color:white;";
-
-  let output = "";
-
-  movies.forEach((movie, index) => {
-    output += `
-        <div class="border-2 border-solid border-red">
-      <button type="button" data-index="${index}">
-        <img
-          src="${movie.image}"
-          alt="${movie.title || movie.name || "Movie poster"}"
-          class="border border-black rounded-xl"
-        >
-      </button>
-      <p class="text-gray-400 text-xs mt-2">
-                    ${movie.releaseYear} · ${movie.type}
-                    <i class="fa-solid fa-plus plus cursor-pointer" style="color: rgb(196, 17, 17);" data-index="${index}"></i>
-                </p>
-      </div>
-    `;
-
-    const card = document.querySelector('#card')
-    let output2 = ``
-    grid.addEventListener('click', function (e) {
-      e.preventDefault()
-      e.stopPropagation()
-      const button = e.target.closest("button[data-index]");
-      if (!button) return;
-      const movie = movies[Number(button.dataset.index)];
-      output2 = `<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-  <a href="index.html" class="block w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
-    <h5 class="mb-3 text-2xl font-semibold leading-8 text-red-600">
-      ${movie.title}
-    </h5>
-    <p class="text-gray-700">
-      <h3>${movie.title}</h3>
-      <h3>${movie.type}</h3>
-      <h3>${movie.releaseYear}</h3>
-      <h3>${movie.seasons}</h3>
-      <h3>${movie.directors}</h3>
-      directors
-    </p>
-  </a>
-</div>`;
-      card.classList.remove("hidden");
-      grid.innerHTML = output;
-      card.innerHTML = output2
-    })
-  });
-  grid.innerHTML = output;
-
-  grid.addEventListener('click', function (e) {
-    const plus = e.target.closest(".plus")
-    if (!plus) return
-    const movie = movies[Number(plus.dataset.index)]
-    if (!favorites.includes(movie)) favorites.push(movie)
-    renderFav()
-  })
-
+  // ---------- PAGINATION ----------
 
   const paginationall = document.getElementById('paginationall')
-  let pogiantion = document.createElement("ul")
-  pogiantion.style.color = "red"
-  pogiantion.setAttribute('id', 'pogiantion')
-  for (let i = 1; i <= movies.length; i++) {
-    const paginationitem = document.createElement('ul')
-    paginationitem.setAttribute('data-index', i)
-    paginationitem.textContent = i
-    pogiantion.appendChild(paginationitem)
+let pogiantion = document.createElement("ul")
+
+
+  const perPage = 6;
+  let page = 1;
+  let list = movies;
+
+  const pag = document.createElement("div");   
+  pag.className = "mt-6 text-center";
+  grid.after(pag);                             
+
+  function render() {
+    const items = list.slice((page - 1) * perPage, page * perPage);
+
+    grid.innerHTML = items.map(m => {
+      const i = movies.indexOf(m);
+      return `
+        <div class="border-2 border-solid ">
+          <button type="button" data-index="${i}">
+            <img src="${m.image}" alt="${m.title || "Poster"}" class="border border-black rounded-xl">
+          </button>
+          <p class="text-gray-400 text-xs mt-2">
+            ${m.releaseYear} · ${m.type}
+            <i class="fa-solid fa-plus plus cursor-pointer" style="color: rgb(196, 17, 17);" data-index="${i}"></i>
+          </p>
+        </div>`;
+    }).join("");
+
+    pag.innerHTML = Array.from({ length: Math.ceil(list.length / perPage) }, (_, n) =>
+      `<button data-page="${n + 1}" class="mx-1 mb-1 rounded-full border border-red-600 px-3 py-1 ${n + 1 === page ? "bg-red-600 text-black" : "text-red-600"}">${n + 1}</button>`
+    ).join("");
   }
-  paginationall.appendChild(pogiantion)
 
+  function setList(newList) {  
+    list = newList;
+    page = 1;
+    render();
+  }
 
+  pag.addEventListener("click", e => {
+    const b = e.target.closest("[data-page]");
+    if (!b) return;
+    page = Number(b.dataset.page);
+    render();
+  });
 
-  const all = document.querySelector("#Tout")
-  const movie = document.querySelector("#movie")
-  const show = document.querySelector("#Show")
-
-
-  movie.addEventListener("click", function (e) {
-    e.preventDefault()
-    const allmovies = movies.filter(item => item.type === "movie")
-    let output = "";
-
-    allmovies.forEach((movie, index) => {
-      output += `
-      <button type="button" data-index="${index}">
-        <img
-          src="${movie.image}"
-          alt="${movie.title || movie.name || "Movie poster"}"
-          class="border border-black rounded-xl"
-        >
-      </button>
-    `;
-      const card = document.querySelector('#card')
-      let output2 = ``
-      grid.addEventListener('click', function (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        const button = e.target.closest("button[data-index]");
-        if (!button) return;
-        const movie = movies[Number(button.dataset.index)];
-        output2 = `<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-  <a href="index.html" class="block w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
-    <h5 class="mb-3 text-2xl font-semibold leading-8 text-red-600">
-      ${movie.title}
-    </h5>
-    <p class="text-gray-700">
-      <h3>${movie.title}</h3>
-      <h3>${movie.type}</h3>
-      <h3>${movie.releaseYear}</h3>
-      <h3>${movie.seasons}</h3>
-      <h3>${movie.directors}</h3>
-      directors
-    </p>
-  </a>
-</div>`;
-        card.classList.remove("hidden");
-        grid.innerHTML = output;
-        card.innerHTML = output2
-      })
-    });
-    grid.innerHTML = output;
-  })
-  show.addEventListener("click", function (e) {
-    e.preventDefault()
-    const seriess = movies.filter(item => item.type === "series")
-    let output = ''
-
-    seriess.forEach((srie, index) => {
-      output += `
-      <button type="button" data-index="${index}">
-        <img
-          src="${srie.image}"
-          alt="${srie.title || srie.name || "Movie poster"}"
-          class="border border-black rounded-xl"
-        >
-      </button>
-    `;
-      grid.innerHTML = output;
-
-      const card = document.querySelector('#card')
-
-      grid.addEventListener('click', function (e) {
-        let output2 = ``
-        e.preventDefault()
-        e.stopPropagation()
-        const button = e.target.closest("button[data-index]");
-        if (!button) return;
-        const srie = movies[Number(button.dataset.index)];
-        output2 = `<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-  <a href="index.html" class="block w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
-    <h5 class="mb-3 text-2xl font-semibold leading-8 text-red-600">
-      ${srie.title}
-    </h5>
-    <p class="text-gray-700">
-      <h3>${srie.title}</h3>
-      <h3>${srie.type}</h3>
-      <h3>${srie.releaseYear}</h3>
-      <h3>${srie.seasons}</h3>
-      <h3>${srie.directors}</h3>
-      directors
-    </p>
-  </a>
-</div>`;
-        card.classList.remove("hidden");
-        card.innerHTML = output2
-      })
-    });
-    grid.innerHTML = output;
-  })
-
-  all.addEventListener("click", function (e) {
-    e.preventDefault()
-    grid.innerHTML = output
-  })
-  const input = document.querySelector("#searche")
-  input.addEventListener("input", function (e) {
-    e.preventDefault()
-    const serche = movies.filter(item => item.title.toLowerCase() === input)
-    console.log(serche)
-  })
-
-  fav.addEventListener("click", function (e) {
-    e.preventDefault()
-    renderFav()
-    favcard.classList.remove("hidden");
-    favcard.classList.add("flex");
-  })
-
-  favcard.addEventListener("click", function (e) {
-    if (e.target === favcard) {
-      favcard.classList.add("hidden");
-      favcard.classList.remove("flex");
+  // ---------- Details + Plus ----------
+  grid.addEventListener("click", e => {
+    const plus = e.target.closest(".plus");
+    if (plus) {
+      const m = movies[Number(plus.dataset.index)];
+      if (!favorites.includes(m)) favorites.push(m);
+      return;
     }
-  })
+    const btn = e.target.closest("button[data-index]");
+    if (!btn) return;
+    const m = movies[Number(btn.dataset.index)];
+    card.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+      <div class="box w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
+        <h5 class="mb-3 text-2xl font-semibold text-red-600">${m.title}</h5>
+        <h3>${m.type}</h3>
+        <h3>${m.releaseYear}</h3>
+        ${m.seasons ? `<h3>Seasons: ${m.seasons}</h3>` : ""}
+        ${m.directors ? `<h3>Directors: ${m.directors}</h3>` : ""}
+      </div>
+    </div>`;
+    card.classList.remove("hidden");
+  });
 
+  card.addEventListener("click", e => {
+    if (!e.target.closest(".box")) card.classList.add("hidden");
+  });
+
+  // ---------- Favoris ----------
+  fav.addEventListener("click", e => {
+    e.preventDefault();
+    favcard.innerHTML = `<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+      <div class="box w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
+        <h5 class="mb-3 text-2xl font-semibold text-red-600">Favoris</h5>
+        ${favorites.length ? favorites.map(m => `<img src="${m.image}" class="w-24 rounded-lg mb-1"><h3>${m.title}</h3>`).join("") : "<p>Aucun favori</p>"}
+      </div>
+    </div>`;
+    favcard.classList.remove("hidden");
+  });
+
+  favcard.addEventListener("click", e => {
+    if (!e.target.closest(".box")) favcard.classList.add("hidden");
+  });
+
+  document.querySelector("#Tout").addEventListener("click", () => setList(movies));
+  document.querySelector("#movie").addEventListener("click", () => setList(movies.filter(m => m.type === "movie")));
+  document.querySelector("#Show").addEventListener("click", () => setList(movies.filter(m => m.type === "series")));
+  input.addEventListener("input", () => setList(movies.filter(m => (m.title || "").toLowerCase().includes(input.value.toLowerCase()))));
+
+  render();
 }
-
-
-
-
-
-
 
 getuser().catch(console.error);
