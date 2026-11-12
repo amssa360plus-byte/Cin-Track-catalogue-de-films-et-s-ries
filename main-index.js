@@ -18,7 +18,7 @@ async function getuser() {
 let pogiantion = document.createElement("ul")
 
 
-  const perPage = 6;
+  const perPage = 8;
   let page = 1;
   let list = movies;
 
@@ -84,7 +84,10 @@ let pogiantion = document.createElement("ul")
     </div>`;
     card.classList.remove("hidden");
     const exitmovie = document.querySelector("#exitmovie")
-  
+    exitmovie.addEventListener("click", function(e){
+      e.preventDefault()
+      card.classList.add('hidden')
+    })
   });
 
   card.addEventListener("click", e => {
@@ -98,7 +101,7 @@ let pogiantion = document.createElement("ul")
       <div class="box w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
         <h5 class="mb-3 text-2xl font-semibold text-red-600">Favoris</h5>
         <a class="relative left-80 bottom-10" id="exits"><i class="fa-solid fa-x" style="color: rgb(196, 17, 17);"></i><a>
-        ${favorites.length ? favorites.map(m => `<img src="${m.image}" class="w-24 rounded-lg mb-1"><h3>${m.title}</h3>`).join("") : "<p>Aucun favori</p>"}
+        ${favorites.length ? favorites.map(m => `<img src="${m.image}" class="w-24 rounded-lg mb-1"><h3>${m.title}</h3><button id="remove" class="border border-solid bg-red-800 rounded-xl hover: bg-red-100 ">remove</button>`).join("") : "<p>Aucun favori</p>"}
         
       </div>
     </div>`;
@@ -107,6 +110,11 @@ let pogiantion = document.createElement("ul")
     exist.addEventListener("click", function(e){
       e.preventDefault()
       favcard.classList.add('hidden')
+    })
+    const remove = document.querySelector("#remove")
+    remove.addEventListener("click", function(e){
+      e.preventDefault(e)
+      
     })
   });
 
