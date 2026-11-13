@@ -4,7 +4,8 @@ async function getuser() {
   const response = await fetch(
     "https://raw.githubusercontent.com/ouchad97/cinetrack-api/main/cinetrack-data.json"
   );
-  const movies = await response.json();
+  
+   const movies = await response.json();
 
   const grid = document.querySelector("#movies-grid");
   const card = document.querySelector("#card");
@@ -44,27 +45,24 @@ let pogiantion = document.createElement("ul")
           </p>
         </div>`;
     }).join("");
-    saveData()
+    
 
     pag.innerHTML = Array.from({ length: Math.ceil(list.length / perPage) }, (_, n) =>
       `<button data-page="${n + 1}" class="mx-1 mb-1 rounded-full border border-red-600 px-3 py-1 ${n + 1 === page ? "bg-red-600 text-black" : "text-red-600"}">${n + 1}</button>`
     ).join("");
-    saveData()
   }
 
   function setList(newList) {  
     list = newList;
     page = 1;
     render();
-    saveData()
-  }
+    }
 
   pag.addEventListener("click", e => {
     const b = e.target.closest("[data-page]");
     if (!b) return;
     page = Number(b.dataset.page);
     render();
-    saveData()
   });
 
   // ---------- Details + Plus ----------
@@ -89,7 +87,7 @@ let pogiantion = document.createElement("ul")
         ${m.directors ? `<h3>Directors: ${m.directors}</h3>` : ""}
       </div>
     </div>`;
-    saveData()
+    
     card.classList.remove("hidden");
     const exitmovie = document.querySelector("#exitmovie")
     exitmovie.addEventListener("click", function(e){
@@ -139,5 +137,5 @@ let pogiantion = document.createElement("ul")
   render();
 }
 
-getuser().catch(console.error);
+getuser().catch(error);
 
