@@ -1,3 +1,5 @@
+const listcontair = document.querySelector("#list")
+const task = document.querySelector("#task")
 async function getuser() {
   const response = await fetch(
     "https://raw.githubusercontent.com/ouchad97/cinetrack-api/main/cinetrack-data.json"
@@ -10,8 +12,8 @@ async function getuser() {
   const favcard = document.querySelector("#favcard");
   const input = document.querySelector("#searche");
 
-  let favorites = [];
 
+let datamovie = JSON.parse(localStorage.getItem("fav")) || [];
   // ---------- PAGINATION ----------
 
   const paginationall = document.getElementById('paginationall')
@@ -42,16 +44,19 @@ let pogiantion = document.createElement("ul")
           </p>
         </div>`;
     }).join("");
+    saveData()
 
     pag.innerHTML = Array.from({ length: Math.ceil(list.length / perPage) }, (_, n) =>
       `<button data-page="${n + 1}" class="mx-1 mb-1 rounded-full border border-red-600 px-3 py-1 ${n + 1 === page ? "bg-red-600 text-black" : "text-red-600"}">${n + 1}</button>`
     ).join("");
+    saveData()
   }
 
   function setList(newList) {  
     list = newList;
     page = 1;
     render();
+    saveData()
   }
 
   pag.addEventListener("click", e => {
@@ -59,6 +64,7 @@ let pogiantion = document.createElement("ul")
     if (!b) return;
     page = Number(b.dataset.page);
     render();
+    saveData()
   });
 
   // ---------- Details + Plus ----------
@@ -66,7 +72,8 @@ let pogiantion = document.createElement("ul")
     const plus = e.target.closest(".plus");
     if (plus) {
       const m = movies[Number(plus.dataset.index)];
-      if (!favorites.includes(m)) favorites.push(m);
+      if (!datamovie.includes(m)) datamovie.push(m);
+      localStorage.setItem("fav", JSON.stringify(datamovie));
       return;
     }
     const btn = e.target.closest("button[data-index]");
@@ -82,11 +89,13 @@ let pogiantion = document.createElement("ul")
         ${m.directors ? `<h3>Directors: ${m.directors}</h3>` : ""}
       </div>
     </div>`;
+    saveData()
     card.classList.remove("hidden");
     const exitmovie = document.querySelector("#exitmovie")
     exitmovie.addEventListener("click", function(e){
       e.preventDefault()
       card.classList.add('hidden')
+
     })
   });
 
@@ -101,7 +110,7 @@ let pogiantion = document.createElement("ul")
       <div class="box w-full max-w-sm rounded-xl border-2 border-red-600 bg-white p-6 text-black shadow-lg">
         <h5 class="mb-3 text-2xl font-semibold text-red-600">Favoris</h5>
         <a class="relative left-80 bottom-10" id="exits"><i class="fa-solid fa-x" style="color: rgb(196, 17, 17);"></i><a>
-        ${favorites.length ? favorites.map(m => `<img src="${m.image}" class="w-24 rounded-lg mb-1"><h3>${m.title}</h3><button id="remove" class="border border-solid bg-red-800 rounded-xl hover: bg-red-100 ">remove</button>`).join("") : "<p>Aucun favori</p>"}
+        ${datamovie.length ? datamovie.map(m => `<img src="${m.image}" class="w-24 rounded-lg mb-1"><h3>${m.title}</h3><button id="remove" class="border border-solid bg-red-800 rounded-xl hover: bg-red-100 ">remove</button>`).join("") : "<p>Aucun favori</p>"}
         
       </div>
     </div>`;
@@ -111,10 +120,10 @@ let pogiantion = document.createElement("ul")
       e.preventDefault()
       favcard.classList.add('hidden')
     })
+    //---remove---
     const remove = document.querySelector("#remove")
     remove.addEventListener("click", function(e){
       e.preventDefault(e)
-      
     })
   });
 
@@ -131,3 +140,4 @@ let pogiantion = document.createElement("ul")
 }
 
 getuser().catch(console.error);
+

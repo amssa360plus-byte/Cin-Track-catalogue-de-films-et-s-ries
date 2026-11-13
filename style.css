@@ -1,7 +1,4 @@
-#tous{
-    width: 30px;
-    height: 20px;
-}
+
 @media (max-width: 768px) {
     .headerr{
         position: relative;
