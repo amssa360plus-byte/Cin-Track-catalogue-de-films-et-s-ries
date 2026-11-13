@@ -1,0 +1,27 @@
+
+@media (max-width: 768px) {
+    .headerr{
+        position: relative;
+        top: -50px;
+        left: 40px;
+    
+    }
+    #fav{
+       position: relative;
+       left : 59px;
+       bottom: 90px;
+    }
+    #altprofile{
+        position: relative;
+        right: 260px;
+        bottom: 42px;
+    }
+    #searche{
+        position: relative;
+        right: 20px;
+    }
+    #logo{
+        position: relative;
+        left: 110px;
+    }
+}
